@@ -1,0 +1,8 @@
+\begin{tabular}{cc}
+$Parameter$ & $Value$\\
+$a$ & $$870.6$\pm $00.7\;\mathrm{mm}\,\mathrm{s}^{-2}\\
+$b$ & $$-1-0.$\pm $00.0\;\mathrm{mm}\,\mathrm{s}^{-1}\\
+$c$ & $$20.2$\pm $04.0\;\mathrm{s}^{-1}\\
+$d$ & $$00.8$\pm $00.0\\
+$e$ & $$1550.6$\pm $00.4\;\mathrm{mm}\,\mathrm{s}^{-2}\\
+\end{tabular}

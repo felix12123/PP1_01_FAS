@@ -1,0 +1,8 @@
+\begin{tabular}{ccccc}
+$method$ & $T$ & $g$ & ${\Delta}g_{zuf}$ & ${\Delta}g_{sys}$\\
+$Parable$ & $$20.6$\pm $00.0\;\mathrm{s} & $$90.7$\pm $00.1\;\mathrm{m}\,\mathrm{s}^{-2} & $00.0\;\mathrm{m}\,\mathrm{s}^{-2}$ & $00.1\;\mathrm{m}\,\mathrm{s}^{-2}$\\
+$Fit$ & $$20.7$\pm $04.9\;\mathrm{s} & $$90.2$\pm $00.1\;\mathrm{m}\,\mathrm{s}^{-2} & $00.0\;\mathrm{m}\,\mathrm{s}^{-2}$ & $00.1\;\mathrm{m}\,\mathrm{s}^{-2}$\\
+$FFT$ & $$20.6$\pm $00.0\;\mathrm{s} & $$90.8$\pm $00.1\;\mathrm{m}\,\mathrm{s}^{-2} & $00.0\;\mathrm{m}\,\mathrm{s}^{-2}$ & $00.1\;\mathrm{m}\,\mathrm{s}^{-2}$\\
+$Zeros$ & $$20.6$\pm $00.0\;\mathrm{s} & $$90.7$\pm $00.1\;\mathrm{m}\,\mathrm{s}^{-2} & $00.0\;\mathrm{m}\,\mathrm{s}^{-2}$ & $00.1\;\mathrm{m}\,\mathrm{s}^{-2}$\\
+$Maxima$ & $$20.6$\pm $00.0\;\mathrm{s} & $$90.7$\pm $00.1\;\mathrm{m}\,\mathrm{s}^{-2} & $00.1\;\mathrm{m}\,\mathrm{s}^{-2}$ & $00.1\;\mathrm{m}\,\mathrm{s}^{-2}$\\
+\end{tabular}
