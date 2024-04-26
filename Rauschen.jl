@@ -53,14 +53,26 @@ Speicherung_Abweichung_y   = joinpath(Speicherort_Plots, "Abweichung_y.png")
 Speicherung_Abweichung_z   = joinpath(Speicherort_Plots, "Abweichung_z.png")
 
 # Punkt 3 - Histogramme:
-Speicherung_Hist_Roh_abs = joinpath(Speicherort_Plots, "Histogramm_Roh_abs.png")
-Speicherung_Hist_Roh_x   = joinpath(Speicherort_Plots, "Histogramm_Roh_x.png")
-Speicherung_Hist_Roh_y   = joinpath(Speicherort_Plots, "Histogramm_Roh_y.png")
-Speicherung_Hist_Roh_z   = joinpath(Speicherort_Plots, "Histogramm_Roh_z.png")
-Speicherung_Hist_Geg_abs = joinpath(Speicherort_Plots, "Histogramm_Geg_abs.png")
-Speicherung_Hist_Geg_x   = joinpath(Speicherort_Plots, "Histogramm_Geg_x.png")
-Speicherung_Hist_Geg_y   = joinpath(Speicherort_Plots, "Histogramm_Geg_y.png")
-Speicherung_Hist_Geg_z   = joinpath(Speicherort_Plots, "Histogramm_Geg_z.png")
+Speicherung_Hist_Roh_abs                       = joinpath(Speicherort_Plots, "Histogramm_Roh_abs.png")
+Speicherung_Hist_Roh_x                         = joinpath(Speicherort_Plots, "Histogramm_Roh_x.png")
+Speicherung_Hist_Roh_y                         = joinpath(Speicherort_Plots, "Histogramm_Roh_y.png")
+Speicherung_Hist_Roh_z                         = joinpath(Speicherort_Plots, "Histogramm_Roh_z.png")
+Speicherung_Hist_Geg_abs                       = joinpath(Speicherort_Plots, "Histogramm_Geg_abs.png")
+Speicherung_Hist_Geg_x                         = joinpath(Speicherort_Plots, "Histogramm_Geg_x.png")
+Speicherung_Hist_Geg_y                         = joinpath(Speicherort_Plots, "Histogramm_Geg_y.png")
+Speicherung_Hist_Geg_z                         = joinpath(Speicherort_Plots, "Histogramm_Geg_z.png")
+Speicherung_Hist_abw_roh_geg_abs_win_size_10   = joinpath(Speicherort_Plots, "Histogramm_Geg_abw_roh_geg_abs_win_size_10.png") 
+Speicherung_Hist_abw_roh_geg_abs_win_size_100  = joinpath(Speicherort_Plots, "Histogramm_Geg_abw_roh_geg_abs_win_size_100.png") 
+Speicherung_Hist_abw_roh_geg_abs_win_size_2001 = joinpath(Speicherort_Plots, "Histogramm_Geg_abw_roh_geg_abs_win_size_2001.png")
+Speicherung_Hist_abw_roh_geg_x_win_size_10     = joinpath(Speicherort_Plots, "Histogramm_Geg_abw_roh_geg_x_win_size_10.png")
+Speicherung_Hist_abw_roh_geg_x_win_size_100    = joinpath(Speicherort_Plots, "Histogramm_Geg_abw_roh_geg_x_win_size_100.png")
+Speicherung_Hist_abw_roh_geg_x_win_size_2001   = joinpath(Speicherort_Plots, "Histogramm_Geg_abw_roh_geg_x_win_size_2001.png")
+Speicherung_Hist_abw_roh_geg_y_win_size_10     = joinpath(Speicherort_Plots, "Histogramm_Geg_abw_roh_geg_y_win_size_10.png")
+Speicherung_Hist_abw_roh_geg_y_win_size_100    = joinpath(Speicherort_Plots, "Histogramm_Geg_abw_roh_geg_y_win_size_100.png")
+Speicherung_Hist_abw_roh_geg_y_win_size_2001   = joinpath(Speicherort_Plots, "Histogramm_Geg_abw_roh_geg_y_win_size_2001.png")
+Speicherung_Hist_abw_roh_geg_z_win_size_10     = joinpath(Speicherort_Plots, "Histogramm_Geg_abw_roh_geg_z_win_size_10.png")
+Speicherung_Hist_abw_roh_geg_z_win_size_100    = joinpath(Speicherort_Plots, "Histogramm_Geg_abw_roh_geg_z_win_size_100.png")
+Speicherung_Hist_abw_roh_geg_z_win_size_2001   = joinpath(Speicherort_Plots, "Histogramm_Geg_abw_roh_geg_z_win_size_2001.png")
 
 
 
@@ -107,6 +119,24 @@ function Block_1()
   res_z_100  = runmean(lin_beschl_z, window_size_100)
   res_z_2001 = runmean(lin_beschl_z, window_size_2001)
 
+  # Abweichung der Rohdaten von geglätteten Werten:
+  # Absolute Beschleunigung:
+  abw_roh_geg_abs_win_size_10   = abs.(abs_beschl .- result10)
+  abw_roh_geg_abs_win_size_100  = abs.(abs_beschl .- result100)
+  abw_roh_geg_abs_win_size_2001 = abs.(abs_beschl .- result2001)
+  # Lineare Beschleunigung in x-Richtung
+  abw_roh_geg_x_win_size_10   = abs.(abs_beschl .- res_x_10)
+  abw_roh_geg_x_win_size_100  = abs.(abs_beschl .- res_x_100)
+  abw_roh_geg_x_win_size_2001 = abs.(abs_beschl .- res_x_2001)
+  # Lineare Beschleunigung in y-Richtung
+  abw_roh_geg_y_win_size_10   = abs.(abs_beschl .- res_y_10)
+  abw_roh_geg_y_win_size_100  = abs.(abs_beschl .- res_y_100)
+  abw_roh_geg_y_win_size_2001 = abs.(abs_beschl .- res_y_2001)
+  # Lineare Beschleunigung in z-Richtung
+  abw_roh_geg_z_win_size_10   = abs.(abs_beschl .- res_z_10)
+  abw_roh_geg_z_win_size_100  = abs.(abs_beschl .- res_z_100)
+  abw_roh_geg_z_win_size_2001 = abs.(abs_beschl .- res_z_2001)
+
   # Berechne Mittelwert & Standardabweichung:
   # Absolute Beschleunigung:
   MW_abs_beschl = mean(abs_beschl)
@@ -133,34 +163,34 @@ function Block_1()
   println("STABW lineare Beschleunigung in z: " * string(ST_lin_beschl_z))
   println("")
 
-  # # Generiere Plot für absolute Beschleunigung:
-  # Plots.scatter(zeit[2000:end], abs_beschl[2000:end], markerstrokewidth=0,title="Absolute Beschleunigung - Rohdaten mit Glättung", xlabel="Zeit [s]", ylabel=L"\mathrm{Beschleunigung [} \frac{m}{s^2} \mathrm{]}", grid=false, dpi=300)
-  # plot!(zeit[2000:end], result10[2000:end],   label = "Geglättete Daten, Window size = 10",   grid=false, dpi=300, linewidth=2)
-  # plot!(zeit[2000:end], result100[2000:end],  label = "Geglättete Daten, Window size = 100",  grid=false, dpi=300, linewidth=2)
-  # plot!(zeit[3000:end], result2001[3000:end], label = "Geglättete Daten, Window size = 2001", grid=false, dpi=300, linewidth=2, linecolor=:black)
-  # hline!([MW_abs_beschl], label="MW = " * string(MW_abs_beschl), color=:red)
-  # savefig(Speicherung_abs_beschl)
-  # # Generiere Plot für lineare Beschleunigung in x-Richtung:
-  # Plots.scatter(zeit[2000:end], lin_beschl_x[2000:end], markerstrokewidth=0,title="Lineare x-Beschleunigung - Rohdaten mit Glättung", xlabel="Zeit [s]", ylabel=L"\mathrm{Beschleunigung [} \frac{m}{s^2} \mathrm{]}", grid=false, dpi=300)
-  # plot!(zeit[2000:end], res_x_10[2000:end],   label = "Geglättete Daten, Window size = 10",   grid=false, dpi=300, linewidth=2)
-  # plot!(zeit[2000:end], res_x_100[2000:end],  label = "Geglättete Daten, Window size = 100",  grid=false, dpi=300, linewidth=2)
-  # plot!(zeit[3000:end], res_x_2001[3000:end], label = "Geglättete Daten, Window size = 2001", grid=false, dpi=300, linewidth=2, linecolor=:black)
-  # hline!([MW_lin_beschl_x], label="MW = " * string(MW_lin_beschl_x), color=:red)
-  # savefig(Speicherung_lin_beschl_x)
-  # # Generiere Plot für lineare Beschleunigung in y-Richtung:
-  # Plots.scatter(zeit[2000:end], lin_beschl_y[2000:end], markerstrokewidth=0,title="Lineare y-Beschleunigung - Rohdaten mit Glättung", xlabel="Zeit [s]", ylabel=L"\mathrm{Beschleunigung [} \frac{m}{s^2} \mathrm{]}", grid=false, dpi=300, legend=:bottomright)
-  # plot!(zeit[2000:end], res_y_10[2000:end],   label = "Geglättete Daten, Window size = 10",   grid=false, dpi=300, linewidth=2)
-  # plot!(zeit[2000:end], res_y_100[2000:end],  label = "Geglättete Daten, Window size = 100",  grid=false, dpi=300, linewidth=2)
-  # plot!(zeit[3000:end], res_y_2001[3000:end], label = "Geglättete Daten, Window size = 2001", grid=false, dpi=300, linewidth=2, linecolor=:black)
-  # hline!([MW_lin_beschl_y], label="MW = " * string(MW_lin_beschl_y), color=:red)
-  # savefig(Speicherung_lin_beschl_y)
-  # # Generiere Plot für lineare Beschleunigung in z-Richtung:
-  # Plots.scatter(zeit[2000:end], lin_beschl_z[2000:end], markerstrokewidth=0,title="Lineare z-Beschleunigung - Rohdaten mit Glättung", xlabel="Zeit [s]", ylabel=L"\mathrm{Beschleunigung [} \frac{m}{s^2} \mathrm{]}", grid=false, dpi=300)
-  # plot!(zeit[2000:end], res_z_10[2000:end],   label = "Geglättete Daten, Window size = 10",   grid=false, dpi=300, linewidth=2)
-  # plot!(zeit[2000:end], res_z_100[2000:end],  label = "Geglättete Daten, Window size = 100",  grid=false, dpi=300, linewidth=2)
-  # plot!(zeit[3000:end], res_z_2001[3000:end], label = "Geglättete Daten, Window size = 2001", grid=false, dpi=300, linewidth=2, linecolor=:black)
-  # hline!([MW_lin_beschl_z], label="MW = " * string(MW_lin_beschl_z), color=:red)
-  # savefig(Speicherung_lin_beschl_z)
+   # Generiere Plot für absolute Beschleunigung:
+   Plots.scatter(zeit[2000:end], abs_beschl[2000:end], markerstrokewidth=0,title="Absolute Beschleunigung - Rohdaten mit Glättung", label = "Messwerte", xlabel="Zeit [s]", ylabel=L"\mathrm{Beschleunigung [} \frac{m}{s^2} \mathrm{]}", grid=false, dpi=300)
+   plot!(zeit[2000:end], result10[2000:end],   label = "Geglättete Daten, Window size = 10",   grid=false, dpi=300, linewidth=2)
+   plot!(zeit[2000:end], result100[2000:end],  label = "Geglättete Daten, Window size = 100",  grid=false, dpi=300, linewidth=2)
+   plot!(zeit[3000:end], result2001[3000:end], label = "Geglättete Daten, Window size = 2001", grid=false, dpi=300, linewidth=2, linecolor=:black)
+   hline!([MW_abs_beschl], label="MW = " * string(MW_abs_beschl), color=:red)
+   savefig(Speicherung_abs_beschl)
+   # Generiere Plot für lineare Beschleunigung in x-Richtung:
+   Plots.scatter(zeit[2000:end], lin_beschl_x[2000:end], markerstrokewidth=0,title="Lineare x-Beschleunigung - Rohdaten mit Glättung", label = "Messwerte", xlabel="Zeit [s]", ylabel=L"\mathrm{Beschleunigung [} \frac{m}{s^2} \mathrm{]}", grid=false, dpi=300)
+   plot!(zeit[2000:end], res_x_10[2000:end],   label = "Geglättete Daten, Window size = 10",   grid=false, dpi=300, linewidth=2)
+   plot!(zeit[2000:end], res_x_100[2000:end],  label = "Geglättete Daten, Window size = 100",  grid=false, dpi=300, linewidth=2)
+   plot!(zeit[3000:end], res_x_2001[3000:end], label = "Geglättete Daten, Window size = 2001", grid=false, dpi=300, linewidth=2, linecolor=:black)
+   hline!([MW_lin_beschl_x], label="MW = " * string(MW_lin_beschl_x), color=:red)
+   savefig(Speicherung_lin_beschl_x)
+   # Generiere Plot für lineare Beschleunigung in y-Richtung:
+   Plots.scatter(zeit[2000:end], lin_beschl_y[2000:end], markerstrokewidth=0,title="Lineare y-Beschleunigung - Rohdaten mit Glättung", label = "Messwerte", xlabel="Zeit [s]", ylabel=L"\mathrm{Beschleunigung [} \frac{m}{s^2} \mathrm{]}", grid=false, dpi=300, legend=:bottomright)
+   plot!(zeit[2000:end], res_y_10[2000:end],   label = "Geglättete Daten, Window size = 10",   grid=false, dpi=300, linewidth=2)
+   plot!(zeit[2000:end], res_y_100[2000:end],  label = "Geglättete Daten, Window size = 100",  grid=false, dpi=300, linewidth=2)
+   plot!(zeit[3000:end], res_y_2001[3000:end], label = "Geglättete Daten, Window size = 2001", grid=false, dpi=300, linewidth=2, linecolor=:black)
+   hline!([MW_lin_beschl_y], label="MW = " * string(MW_lin_beschl_y), color=:red)
+   savefig(Speicherung_lin_beschl_y)
+   # Generiere Plot für lineare Beschleunigung in z-Richtung:
+   Plots.scatter(zeit[2000:end], lin_beschl_z[2000:end], markerstrokewidth=0,title="Lineare z-Beschleunigung - Rohdaten mit Glättung", label = "Messwerte", xlabel="Zeit [s]", ylabel=L"\mathrm{Beschleunigung [} \frac{m}{s^2} \mathrm{]}", grid=false, dpi=300)
+   plot!(zeit[2000:end], res_z_10[2000:end],   label = "Geglättete Daten, Window size = 10",   grid=false, dpi=300, linewidth=2)
+   plot!(zeit[2000:end], res_z_100[2000:end],  label = "Geglättete Daten, Window size = 100",  grid=false, dpi=300, linewidth=2)
+   plot!(zeit[3000:end], res_z_2001[3000:end], label = "Geglättete Daten, Window size = 2001", grid=false, dpi=300, linewidth=2, linecolor=:black)
+   hline!([MW_lin_beschl_z], label="MW = " * string(MW_lin_beschl_z), color=:red)
+   savefig(Speicherung_lin_beschl_z)
     
 
 
@@ -197,22 +227,22 @@ function Block_1()
 
   # Generiere die Plots zu den Vergrößersten Abschnitten:
   # Absolute Beschleunigung
-  Plots.plot(zeit[40000:50000], result2001[40000:50000], title= "Vergr. Abschnitt - Abs. Beschleunigung",     xlabel="Zet [s]", ylabel=L"\mathrm{Beschleunigung [} \frac{m}{s^2} \mathrm{]}", grid=false, dpi=300)
+  Plots.plot(zeit[40000:50000], result2001[40000:50000], title= "Vergr. Abschnitt - Abs. Beschleunigung",     xlabel="Zet [s]", ylabel=L"\mathrm{Beschleunigung [} \frac{m}{s^2} \mathrm{]}", grid=false, label="Messwerte", dpi=300)
   hline!([MW_abs_beschl_vergr], label=L"\mathrm{MW = }" * string(MW_abs_beschl_vergr) * L"\frac{m}{s^2}", color=:red)
   annotate!(430, 0.137, annotationfontsize=8, L"\mathrm{STABW = } " *string(ST_abs_beschl_vergr) * L"\frac{m}{s^2}")
   savefig(Speicherung_Abweichung_abs)
   # In x-Richtung
-  Plots.plot(zeit[40000:50000], res_x_2001[40000:50000], title= "Vergr. Abschnitt - Lin. Beschleunigung in x", xlabel="Zet [s]", ylabel=L"\mathrm{Beschleunigung [} \frac{m}{s^2} \mathrm{]}", legend=:top, grid=false, dpi=300)
+  Plots.plot(zeit[40000:50000], res_x_2001[40000:50000], title= "Vergr. Abschnitt - Lin. Beschleunigung in x", xlabel="Zet [s]", ylabel=L"\mathrm{Beschleunigung [} \frac{m}{s^2} \mathrm{]}", legend=:top, grid=false, label="Messwerte", dpi=300)
   annotate!(450, 0.084, annotationfontsize=8, L"\mathrm{STABW = } " *string(ST_lin_beschl_x_vergr) * L"\frac{m}{s^2}")
   hline!([MW_lin_beschl_x_vergr], label=L"\mathrm{MW = }" * string(MW_lin_beschl_x_vergr) * L"\frac{m}{s^2}", color=:red)
   savefig(Speicherung_Abweichung_x)
   # In y-Richtung
-  Plots.plot(zeit[40000:50000], res_y_2001[40000:50000], title= "Vergr. Abschnitt - Lin. Beschleunigung in y", xlabel="Zet [s]", ylabel=L"\mathrm{Beschleunigung [} \frac{m}{s^2} \mathrm{]}", legend=:bottomright, grid=false, dpi=300)
+  Plots.plot(zeit[40000:50000], res_y_2001[40000:50000], title= "Vergr. Abschnitt - Lin. Beschleunigung in y", xlabel="Zet [s]", ylabel=L"\mathrm{Beschleunigung [} \frac{m}{s^2} \mathrm{]}", legend=:bottomright, grid=false, label="Messwerte", dpi=300)
   annotate!(475, 0.016, annotationfontsize=8, L"\mathrm{STABW = } " *string(ST_lin_beschl_y_vergr) * L"\frac{m}{s^2}")
   hline!([MW_lin_beschl_y_vergr], label=L"\mathrm{MW = }" * string(MW_lin_beschl_y_vergr) * L"\frac{m}{s^2}", color=:red)
   savefig(Speicherung_Abweichung_y)
   # In z-Richtung
-  Plots.plot(zeit[40000:50000], res_z_2001[40000:50000], title= "Vergr. Abschnitt - Lin. Beschleunigung in z", xlabel="Zet [s]", ylabel=L"\mathrm{Beschleunigung [} \frac{m}{s^2} \mathrm{]}", legend=:bottomright, grid=false, dpi=300)
+  Plots.plot(zeit[40000:50000], res_z_2001[40000:50000], title= "Vergr. Abschnitt - Lin. Beschleunigung in z", xlabel="Zet [s]", ylabel=L"\mathrm{Beschleunigung [} \frac{m}{s^2} \mathrm{]}", legend=:bottomright, grid=false, label="Messwerte", dpi=300)
   annotate!(475, 0.097, annotationfontsize=8, L"\mathrm{STABW = } " *string(ST_lin_beschl_z_vergr) * L"\frac{m}{s^2}")
   hline!([MW_lin_beschl_z_vergr], label=L"\mathrm{MW = }" * string(MW_lin_beschl_z_vergr) * L"\frac{m}{s^2}", color=:red)
   savefig(Speicherung_Abweichung_z)
@@ -236,32 +266,61 @@ function Block_1()
 
   # Histogramme für Rohdaten:
   #Absolute Beschleunigung
-  histogram(abs_beschl[40000:50000], grid=false, title="Histogramm Rohdaten - Absolute Beschelunigung")
+  histogram(abs_beschl[40000:50000], grid=false, legend=false, xlabel = "Beschleunigung " * L"[m/s^2]", ylabel = "Häufigkeit", title="Histogramm Rohdaten - Absolute Beschleunigung")
   savefig(Speicherung_Hist_Roh_abs)
   # Beschleunigung in x-Richtung
-  histogram(lin_beschl_x[40000:50000], grid=false, title="Histogramm Rohdaten - Lin. Beschelunigung in x")
+  histogram(lin_beschl_x[40000:50000], grid=false, legend=false, xlabel = "Beschleunigung " * L"[m/s^2]", ylabel = "Häufigkeit", title="Histogramm Rohdaten - Lin. Beschleunigung in x")
   savefig(Speicherung_Hist_Roh_x)
   # Beschleunigung in y-Richtung
-  histogram(lin_beschl_y[40000:50000], grid=false, title="Histogramm Rohdaten - Lin. Beschelunigung in y")
+  histogram(lin_beschl_y[40000:50000], grid=false, legend=false, xlabel = "Beschleunigung " * L"[m/s^2]", ylabel = "Häufigkeit", title="Histogramm Rohdaten - Lin. Beschleunigung in y")
   savefig(Speicherung_Hist_Roh_y)
   # Beschleunigung in z-Richtung
-  histogram(lin_beschl_z[40000:50000], grid=false, title="Histogramm Rohdaten - Lin. Beschelunigung in z")
+  histogram(lin_beschl_z[40000:50000], grid=false, legend=false, xlabel = "Beschleunigung " * L"[m/s^2]", ylabel = "Häufigkeit", title="Histogramm Rohdaten - Lin. Beschleunigung in z")
   savefig(Speicherung_Hist_Roh_z)
 
   # Histogramme für geglätteten Werte:
   #Absolute Beschleunigung
-  histogram(result2001[40000:50000], grid=false, title="Histogramm Geglättete Daten - Abs. Beschelunigung")
+  histogram(result2001[40000:50000], grid=false, legend=false, xlabel = "Beschleunigung " * L"[m/s^2]", ylabel = "Häufigkeit", title="Histogramm Geglättete Daten - Abs. Beschleunigung")
   savefig(Speicherung_Hist_Geg_abs)
   # Beschleunigung in x-Richtung
-  histogram(res_x_2001[40000:50000], grid=false, title="Histogramm Geglättete Daten - x Beschelunigung")
+  histogram(res_x_2001[40000:50000], grid=false, legend=false, xlabel = "Beschleunigung " * L"[m/s^2]", ylabel = "Häufigkeit", title="Histogramm Geglättete Daten - x Beschleunigung")
   savefig(Speicherung_Hist_Geg_x)
   # Beschleunigung in y-Richtung
-  histogram(res_y_2001[40000:50000], grid=false, title="Histogramm Geglättete Daten - y Beschelunigung")
+  histogram(res_y_2001[40000:50000], grid=false, legend=false, xlabel = "Beschleunigung " * L"[m/s^2]", ylabel = "Häufigkeit", title="Histogramm Geglättete Daten - y Beschleunigung")
   savefig(Speicherung_Hist_Geg_y)
   # Beschleunigung in z-Richtung
-  h=histogram(res_z_2001[40000:50000], grid=false, title="Histogramm Geglättete Daten - z Beschelunigung")
-  #savefig(Speicherung_Hist_Geg_z)
+  histogram(res_z_2001[40000:50000], grid=false, legend=false, xlabel = "Beschleunigung " * L"[m/s^2]", ylabel = "Häufigkeit", title="Histogramm Geglättete Daten - z Beschleunigung")
+  savefig(Speicherung_Hist_Geg_z)
 
+  # Histogramme für Abweichung der Rohdaten von den geglätteten Werten:
+  # Absolute Beschleunigung:
+  histogram(abw_roh_geg_abs_win_size_10[40000:50000], grid=false, legend=false, xlabel = "Abweichende Beschleunigung " * L"[m/s^2]", ylabel = "Häufigkeit", title="Abweichung Roh/Geg [win size 10] - Abs. Beschl.")
+  savefig(Speicherung_Hist_abw_roh_geg_abs_win_size_10)
+  histogram(abw_roh_geg_abs_win_size_100[40000:50000], grid=false, legend=false, xlabel = "Abweichende Beschleunigung " * L"[m/s^2]", ylabel = "Häufigkeit", title="Abweichung Roh/Geg [win size 100] - Abs. Beschl.")
+  savefig(Speicherung_Hist_abw_roh_geg_abs_win_size_100)
+  histogram(abw_roh_geg_abs_win_size_2001[40000:50000], grid=false, legend=false, xlabel = "Abweichende Beschleunigung " * L"[m/s^2]", ylabel = "Häufigkeit", title="Abweichung Roh/Geg [win size 2001] - Abs. Beschl.")
+  savefig(Speicherung_Hist_abw_roh_geg_abs_win_size_2001)
+
+  histogram(abw_roh_geg_x_win_size_10[40000:50000], grid=false, legend=false, xlabel = "Abweichende Beschleunigung " * L"[m/s^2]", ylabel = "Häufigkeit", title="Abweichung Roh/Geg [win size 10] - x Beschl.")
+  savefig(Speicherung_Hist_abw_roh_geg_x_win_size_10)
+  histogram(abw_roh_geg_x_win_size_100[40000:50000], grid=false, legend=false, xlabel = "Abweichende Beschleunigung " * L"[m/s^2]", ylabel = "Häufigkeit", title="Abweichung Roh/Geg [win size 100] - x Beschl.")
+  savefig(Speicherung_Hist_abw_roh_geg_x_win_size_100)
+  histogram(abw_roh_geg_x_win_size_2001[40000:50000], grid=false, legend=false, xlabel = "Abweichende Beschleunigung " * L"[m/s^2]", ylabel = "Häufigkeit", title="Abweichung Roh/Geg [win size 2001] - x Beschl.")
+  savefig(Speicherung_Hist_abw_roh_geg_x_win_size_2001)
+
+  histogram(abw_roh_geg_y_win_size_10[40000:50000], grid=false, legend=false, xlabel = "Abweichende Beschleunigung " * L"[m/s^2]", ylabel = "Häufigkeit", title="Abweichung Roh/Geg [win size 10] - y Beschl.")
+  savefig(Speicherung_Hist_abw_roh_geg_y_win_size_10)
+  histogram(abw_roh_geg_y_win_size_100[40000:50000], grid=false, legend=false, xlabel = "Abweichende Beschleunigung " * L"[m/s^2]", ylabel = "Häufigkeit", title="Abweichung Roh/Geg [win size 100] - y Beschl.")
+  savefig(Speicherung_Hist_abw_roh_geg_y_win_size_100)
+  histogram(abw_roh_geg_y_win_size_2001[40000:50000], grid=false, legend=false, xlabel = "Abweichende Beschleunigung " * L"[m/s^2]", ylabel = "Häufigkeit", title="Abweichung Roh/Geg [win size 2001] - y Beschl.")
+  savefig(Speicherung_Hist_abw_roh_geg_y_win_size_2001)
+
+  histogram(abw_roh_geg_z_win_size_10[40000:50000], grid=false, legend=false, xlabel = "Abweichende Beschleunigung " * L"[m/s^2]", ylabel = "Häufigkeit", title="Abweichung Roh/Geg [win size 10] - z Beschl.")
+  savefig(Speicherung_Hist_abw_roh_geg_z_win_size_10)
+  histogram(abw_roh_geg_z_win_size_100[40000:50000], grid=false, legend=false, xlabel = "Abweichende Beschleunigung " * L"[m/s^2]", ylabel = "Häufigkeit", title="Abweichung Roh/Geg [win size 100] - z Beschl.")
+  savefig(Speicherung_Hist_abw_roh_geg_z_win_size_100)
+  histogram(abw_roh_geg_z_win_size_2001[40000:50000], grid=false, legend=false, xlabel = "Abweichende Beschleunigung " * L"[m/s^2]", ylabel = "Häufigkeit", title="Abweichung Roh/Geg [win size 2001] - z Beschl.")
+  savefig(Speicherung_Hist_abw_roh_geg_z_win_size_2001)
 end
 
 
