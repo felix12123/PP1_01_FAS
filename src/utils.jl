@@ -2,9 +2,8 @@
 function format_nums(x, digs)
 	if isa(x, String) return x end
 	function round_float(x::Float64, digs::Int)::String
-		str = floor(Int, x) |> string
-		str2 = (string(x%1) * repeat("0", digs))[1:digs]
-		return str*str2
+		x = round(x, sigdigits=digs)
+		return (string(x) * repeat("0", digs))[1:digs+1]
 	end
  
 	if isa(x, Quantity)
@@ -13,7 +12,7 @@ function format_nums(x, digs)
 		if isa(x, Measurement)
 			return round_float(Measurements.value(x), digs) * L"\pm "*round_float(Measurements.uncertainty(x), digs)* L" \, \textrm{"*unit*"}"
 		else
-			return round_float(x, digs) * L"\, \textrm{$unit}"
+			return round_float(x, digs) * L"\, \textrm{"*unit*"}"
 		end
 	elseif isa(x, Measurement)
 		return L""*round_float(Measurements.value(x), digs)*L"\pm "*round_float(Measurements.uncertainty(x), digs)
@@ -67,3 +66,15 @@ function save_df_table(filename::String, df1::DataFrame, digs::Int=3)
 	 end
 	 return latex_str
  end
+
+function save_df_table1(path, df, digs=3)
+	df = deepcopy(df)
+	display(df)
+	for i in axes(df, 2)
+		if isa(df[1, i], Number) && !isa(df[1, i], Integer)
+			df[!, i] .= round.(typeof(df[1,i]), df[!, i], sigdigits=digs)
+		end
+	end
+	display(df)
+	write(path, latexify(df, env=:table, fmt=x -> format_nums(x, digs)))
+end

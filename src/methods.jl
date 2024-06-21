@@ -10,7 +10,7 @@ function visualize_acc_comps(data)
 
 	l = @layout [a b; c d]
 	ges_plot = plot(plot1, plot2, plot3, plot4, layout=l, dpi=300, left_margin=3Plots.mm, bottom_margin=3Plots.mm, size=(let l=800; (l, 9/16*l) end))
-	savefig(ges_plot, "Plots\\Acc_Comps")
+	savefig(ges_plot, "Plots2/Acc_Comps")
 end
 
 # here the frequency is determined by a fit over the whole data at once
@@ -34,7 +34,7 @@ function freq_fit(data, freqguess::Float64=0.0)
 	df_param = DataFrame(Parameter=["a", "b", "c", "d", "e"], Value=params)
 	println("Parameters for Fit:")
 	display(df_param)
-	save_df_table("Tables\\Tot_Fit", df_param)
+	save_df_table("Tables/Tot_Fit", df_param)
 
 	# output T
 	T = 2pi/params[3]
@@ -50,7 +50,7 @@ function freq_fit(data, freqguess::Float64=0.0)
 								xlabel="Zeit",
 								ylabel="Beschleunigung")
 	plot!(data.t, fitdata, label="Fit", linecolor=:black)
-	savefig(plot1, "Plots\\Fit")
+	savefig(plot1, "Plots2/Fit")
 
 	# intervall = 1:div(length(data.t), 500)
 	# x = data.t[intervall] |> eachindex
@@ -61,8 +61,9 @@ end
 
 # here the frequency is determined by a combination of rough estimates
 # of peaks a\nnd a parable fit to increase the precision
-function freq_par(data)
-	println("\nPARABEL FIT AUSWERTUNG ======================================")
+function freq_par(data; quiet=false)
+	my_println(x...) = quiet || println(x...)
+	my_println("\nPARABEL FIT AUSWERTUNG ======================================")
 
 	# datag ist die geglättete variante von data
 	datag = copy(data)
@@ -78,7 +79,7 @@ function freq_par(data)
 	maxima = []
 
 	# Define size of region for Fit
-	rad = (peaks[2] - peaks[1]) / 4 |> floor |> Int
+	rad = (peaks[2] - peaks[1]) / 5 |> floor |> Int
 
 	for peak in peaks
 		inds = max(1, peak-rad):min(length(data.t), peak+rad)
@@ -92,24 +93,27 @@ function freq_par(data)
 		append!(maxima, [params[2]])
 	end
 	
-	plot1 = plot(data.t, data.abs, label="Messwerte", linewidth=2, title="Parabel Fits")
+	plot1 = plot(data.t, data.y, label="Messwerte", linewidth=2, title="Parabel Fits", dpi=300, xlabel="Zeit", ylabel="Beschleunigung")
 	# Parabeln einzeichnen:
 	for i in eachindex(peaks)
-		inds = max(1, i-rad):min(length(data.t), i+rad)
+		i0 = findmin(abs.(data.t .- parables[i][2]))[2] # Index des Peaks
+		
+		inds = max(1, i0-rad):min(length(data.t), i0+rad) # Indizes für Fit
 		x = data.t[inds]
 		y = model(x, Measurements.value.(parables[i]))
+
 		plot!(x, y, label="", linecolor=:black)
 		scatter!([parables[i][2].val], [parables[i][3].val], label="", dpi = 300, color=:orange)
 	end
 	sort!(maxima)
 	distances = maxima[2:end] .- maxima[1:end-1]
 
-	println("mean dist = ", mean(distances))
+	my_println("mean dist = ", mean(distances))
 	T = 1u"s"*(mean(distances) + (0 ± std(Measurements.value.(distances))))
-	println("T = ", T)
+	my_println("T = ", T)
 	
 
-	savefig(plot1, "Plots\\Parbel")
+	if !quiet; savefig(plot1, "Plots2/Parbel"); end
 
 	return T, maxima
 end
@@ -119,7 +123,7 @@ end
 function freq_fft(data)
 	println("\nFOURIER TRAFO AUSWERTUNG =================================")
 
-	data = data
+	data = deepcopy(data)
 	
 	sampling_rate = round(1/(data.t[2]-data.t[1])) |> Int
 
@@ -127,19 +131,24 @@ function freq_fft(data)
 
 	F = abs.(fft(y) |> fftshift)
 	freqs = fftshift(fftfreq(length(y), sampling_rate))
+	peaks = findpeaks(vcat(F, -F), min_prom=maximum(abs.(F))/25, threshold=maximum(abs.(F))/1000) .% size(F, 1)
+	peak = sort(peaks)[end]
 
-	model(x,p) = p[1] .+ p[2]  ./ ((x .- p[3])  .^ 2 .+ p[4]^2) .* p[4]^2
+	model(x,p) = p[1] .+ p[2]  ./ ((x .- p[3])  .^ 2 .+ (p[4]/2)^2) .* (p[4]/2)^2
 	p0=[0.0, 1300.0, 0.3, 0.1]
-	fit = curve_fit(model, freqs[end÷2:end], F[end÷2:end], p0)
+
+	fit_rad = 15
+	x = freqs[peak-fit_rad:peak+fit_rad]
+	y = F[peak-fit_rad:peak+fit_rad]
+	fit = curve_fit(model, x, y, p0)
 	
 	# darstellung der fft und des fits
 	# plot(freqs[end÷2:end], F[end÷2:end], xlims=(0, 1), dpi=300, title="FFT der Beschleunigung", xlabel="Frequenz", ylabel="Amplitude")
 	# plot!(freqs[end÷2]:0.001:freqs[end], model(freqs[end÷2]:0.001:freqs[end], fit.param)) |> display
 
 	# Automatisches Identifizieren von dominanten Frequenzkomponenten
-	peaks = findpeaks(vcat(F, -F), min_prom=maximum(abs.(F))/25, threshold=maximum(abs.(F))/1000) .% size(F, 1)
 
-	if peaks[1] == 0 peaks = peaks[2:end] end
+	if abs(peaks[1]) <= 0.01 peaks = peaks[2:end] end
 
 	# Die Dominanteste Frequenzkomponente ist die schwingungs frequenz
 	# T = 1/mean([freqs[(peaks[1])], freqs[(peaks[2])]]) * 1u"s"
@@ -149,9 +158,11 @@ function freq_fft(data)
 
 	
 	x_max = maximum(abs.(freqs[peaks])) * 2
-	plot1 = plot(freqs, F, xlim=(-x_max,x_max))
-	scatter!(freqs[peaks], F[peaks])
-
+	plot1 = plot(freqs, F, xlim=(0.34,0.4), dpi=300, title="FFT der Beschleunigung", xlabel="Frequenz", ylabel="Amplitude", label="FFT")
+	fitdata = model(x, fit.param)
+	plot!(x, fitdata, linecolor=:black, label="Fit")
+	scatter!(freqs[peaks], F[peaks], label="Peak", color=:orange)
+	savefig(plot1, "Plots2/FFT")
 	return abs(T) * 1u"s"
 end
 # i=10000;j=2;data_file = "Data\\PendelSmartphone182cm.csv";data = CSV.File(data_file, delim=";") |> DataFrame; rename!(data, [:t, :x, :y, :z, :abs]); freq_fft(data[end÷i:end÷j, :])
@@ -179,9 +190,9 @@ function freq_zeros(data)
 
 	vzw = y[1:end-1] .* y[2:end]
 
-	zeros = findall(x -> x<0, vzw)
+	t_vzw = findall(x -> x<0, vzw)
 
-	T = 2 * ((diff(x[zeros]) |> mean |> abs) ± (std(diff(x[zeros])) |> abs))
+	T = 2 * ((diff(x[t_vzw]) |> mean |> abs) ± (std(diff(x[t_vzw])) |> abs))
 	return T * 1u"s"
 end
 
@@ -189,12 +200,12 @@ end
 # visualize the period length and the standard deviation of the period length over time
 function vis_T_std()
 	# get data
-	data_file = "Data\\PendelSmartphone182cm.csv"
+	data_file = "./Data/PendelSmartphone182cm.csv"
 	data = CSV.File(data_file, delim=";") |> DataFrame
 	rename!(data, [:t, :x, :y, :z, :abs])
 
 	# get period lengths
-	maxima = [x.val for x in freq_par(data)[2]] 
+	maxima = [x.val for x in freq_par(data, quiet=true)[2]] 
 	T_ps = diff(maxima)
 
 
@@ -202,5 +213,5 @@ function vis_T_std()
 	# color area between mean and std
 	plot(runmean(T_ps, length(T_ps)), ribbon=1.96*runstd(T_ps, length(T_ps)), fillalpha=0.2, linecolor=:orange, fillcolor=:orange, label="σ_T", dpi=300, title="Abhängigkeit von T und σ_T von Anzahl Messwerten", xlabel="Verwendete Messwerte", ylabel="Periodendauer T [s]")
 
-	savefig("Plots\\T_std")
+	savefig("Plots2/T_std")
 end
