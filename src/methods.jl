@@ -209,9 +209,8 @@ function vis_T_std()
 	T_ps = diff(maxima)
 
 
-	# to get the 95% confidence interval for the mean, we multiply the standard deviation by 1.96
 	# color area between mean and std
-	plot(runmean(T_ps, length(T_ps)), ribbon=1.96*runstd(T_ps, length(T_ps)), fillalpha=0.2, linecolor=:orange, fillcolor=:orange, label="σ_T", dpi=300, title="Abhängigkeit von T und σ_T von Anzahl Messwerten", xlabel="Verwendete Messwerte", ylabel="Periodendauer T [s]")
+	plot(runmean(T_ps, length(T_ps)), ribbon=runstd(T_ps, length(T_ps)), fillalpha=0.2, linecolor=:orange, fillcolor=:orange, label="σ_T", dpi=300, title="Abhängigkeit von T und σ_T von Anzahl Messwerten", xlabel="Verwendete Messwerte", ylabel="Periodendauer T [s]")
 
 	savefig("Plots2/T_std")
 end

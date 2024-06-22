@@ -10,7 +10,7 @@ include("src/utils.jl")
 include("tasks/A2.jl")
 
 A2()
-# vis_T_std()
+vis_T_std()
 
 
 

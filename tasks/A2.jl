@@ -5,8 +5,20 @@ using Unitful
 using Plots
 
 Mm = Measurements
+
+if !isdir("Plots2")
+	mkdir("Plots2")
+end
+if !isdir("Tables")
+	mkdir("Tables")
+end
+if !isdir("Plots2")
+	mkdir("Plots2")
+end
+
+
 function A2()
-	Faden_Länge = 1.80u"m"
+	Faden_Länge = 1.8u"m"
 	# load data
 	data_file = "./Data/PendelSmartphone182cm.csv"
 	data = CSV.File(data_file, delim=";") |> DataFrame
@@ -27,7 +39,7 @@ function A2()
 	freq_par(data[end÷6:end÷5, :])# besserer plot
 	# calculate g
 	# T = 2π ⋅ √(l/g)  ⇒  g = l⋅4π²/T²
-	g(T) = (Faden_Länge ± 0.03u"m") * 4pi^2 / (T .^ 2)
+	g(T) = (Faden_Länge ± 0.01u"m") * 4pi^2 / (T .^ 2)
 	g_ohne_sys(T) = Faden_Länge * 4pi^2 / (T .^ 2)
 	gs = g_ohne_sys.(Ts)
 	
@@ -40,7 +52,7 @@ function A2()
 	println("T only has random error.")
 	display(results)
 
-	scatter(methods, gs, label="g", xlabel="Methode", ylabel="g", title="", legend=:topleft)
+	scatter(methods, results.g, label="g", xlabel="Methode", ylabel="g", title="", legend=:topleft, dpi=300)
 	hline!([9.808], label="g_lit")
 	savefig("Plots2/g_methode")
 
